@@ -1,0 +1,96 @@
+﻿@model DotNetMiniProject.Models.Admin
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <--></>
+            <div class="form-group my-3">
+                <label for="role">Role : </label>
+                <input type="radio" id="admin" name="role" value="admin" /> Admin
+                <input type="radio" id="customer" name="role" value="customer" /> Customer<br />
+                <span id="roleError" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <a class="link-secondary" asp-action="Register" asp-controller="Account">Or Signup?</a>
+                <button type="submit" class="btn btn-danger">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function validateForm() {
+            var isValid = true;
+
+            // Validate Email
+            var email = document.getElementById("email").value.trim();
+            var roleAdmin = document.getElementById("admin").checked; // " "
+            var roleCustomer = document.getElementById("customer").checked; //  customer
+
+            if (email === "") {
+                document.getElementById("emailError").textContent = "Email is required and must be in a valid format (example@gmail.com)";
+                isValid = false;
+            } else if (email === "admin@gmail.com" && !roleAdmin) {
+                document.getElementById("roleError").textContent = "Please choose the correct role";
+                isValid = false;
+            } else if (email !== "admin@gmail.com" && roleAdmin) {
+                document.getElementById("roleError").textContent = "Please choose the correct role for customer";
+                isValid = false;
+            } else {
+                document.getElementById("emailError").textContent = "";
+                document.getElementById("roleError").textContent = "";
+            }
+
+            // Validate Role
+            if (!roleAdmin && !roleCustomer) {
+                document.getElementById("roleError").textContent = "Please choose a role";
+                isValid = false;
+            } else if (email === "admin@gmail.com" && !roleAdmin) {
+                document.getElementById("roleError").textContent = "Admin email must have admin role";
+                isValid = false;
+            } else if (email !== "admin@gmail.com" && roleAdmin) {
+                document.getElementById("roleError").textContent = "Please choose the correct role for customer";
+                isValid = false;
+            } else {
+                document.getElementById("roleError").textContent = "";
+            }
+
+            // Validate Password
+            var password = document.getElementById("password").value;
+            var passwordPattern = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W).{6,}$/;
+            if (!passwordPattern.test(password)) {
+                document.getElementById("passwordError").textContent = "Password must be at least 6 characters long and contain at least one digit, one letter, and one special character";
+                isValid = false;
+            } else {
+                document.getElementById("passwordError").textContent = "";
+            }
+
+            return isValid;
+        }
+    </script>
+}

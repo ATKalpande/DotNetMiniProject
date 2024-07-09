@@ -1,0 +1,60 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+
+
+@model DotNetMiniProject.Models.User
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+
+<button class="btn m-4 btn-primary">
+    <a class="addBtn text-decoration-none text-black" asp-action="Login"  asp-controller="Account">Logout</a>
+</button>
+
+<div class="container">
+
+
+    @if (ViewBag.LocationGroups != null && ViewBag.LocationGroups.Count > 0)
+    {
+        @foreach (var group in ViewBag.LocationGroups)
+        {
+            @*  <h2 class="title-c"><i class="fas fa-map-marker-alt"></i> Restaurants in @group.Key</h2> *@
+
+            <div class="row">
+                @foreach (var fd in group.Value)
+                {
+                    <div class="col-md-4 mb-3 restaurant-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title text-capitalize">@fd.Name</h5>
+                                <p class="card-text">@fd.Description</p>
+                                <p class="card-text">@fd.Location</p>
+                                <!-- Add more restaurant details as needed
+                                <a href="@Url.Action("MNO", "User", new { id = fd.Id })" class="btn btn-warning">Enroll</a> -->
+                                <a class="btn btn-warning" asp-action="MNO" asp-controller="User" onclick="alert('Course Enrolled ${@fd.Name}');">Enroll</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+    else
+    {
+        <p>No restaurants available</p>
+    }
+</div>
+<!--<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div-->

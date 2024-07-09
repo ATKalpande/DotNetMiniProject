@@ -1,0 +1,131 @@
+﻿@model DotNetMiniProject.Models.User
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Register</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Register" asp-controller="Account" method="post" onsubmit="return validateForm()">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <a class="link-secondary" asp-action="Login" asp-controller="Account">Or Login?</a>
+
+                <button type="submit" class="btn btn-secondary">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        function validateForm() {
+            var isValid = true;
+
+            // Validate Username
+            var userName = document.getElementById("userName").value.trim();
+            if (userName === "") {
+                document.getElementById("userNameError").textContent = "Username is required";
+                isValid = false;
+            } else {
+                document.getElementById("userNameError").textContent = "";
+
+            }
+
+            // Validate Email
+            var email = document.getElementById("email").value.trim();
+            //   var emailPattern = /^[a-zA-Z0-9._%+-]+[']+\.[a-zA-Z]{2,}$/;
+            if (email === "") {
+                document.getElementById("emailError").textContent = "Email must be required and in a valid format (example@gmail.com)";
+                isValid = false;
+            } else {
+                document.getElementById("emailError").textContent = "";
+
+            }
+
+            // Validate Phone Number
+            var phone = document.getElementById("phone").value.trim();
+            var phonePattern = /^\d{10}$/;
+            if (!phonePattern.test(phone)) {
+                document.getElementById("phoneError").textContent = "Phone number must be 10 digits";
+                isValid = false;
+            } else {
+                document.getElementById("phoneError").textContent = "";
+
+            }
+
+            // Validate Address
+            var address = document.getElementById("address").value.trim();
+            if (address === "") {
+                document.getElementById("addressError").textContent = "Address is required";
+                isValid = false;
+            } else {
+                document.getElementById("addressError").textContent = "";
+
+            }
+
+            // Validate Password
+            var password = document.getElementById("password").value;
+            var passwordPattern = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W).{6,}$/;
+            if (!passwordPattern.test(password)) {
+                document.getElementById("passwordError").textContent = "Password must be at least 6 characters long and contain at least one digit, one letter, and one special character";
+                isValid = false;
+            } else {
+                document.getElementById("passwordError").textContent = "";
+
+            }
+
+            // Validate Confirm Password
+            var confirmPassword = document.getElementById("confirmPassword").value;
+            if (confirmPassword !== password) {
+                document.getElementById("confirmPasswordError").textContent = "Passwords do not match";
+                isValid = false;
+            } else {
+                document.getElementById("confirmPasswordError").textContent = "";
+
+            }
+
+            return isValid;
+        }
+    </script>
+}
